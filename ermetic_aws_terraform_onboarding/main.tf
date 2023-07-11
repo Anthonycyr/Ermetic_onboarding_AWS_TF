@@ -63,5 +63,5 @@ resource "aws_s3_bucket" "ermetic_trail_bucket" {
 
 resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
   bucket = aws_s3_bucket.ermetic_trail_bucket.id
-  policy = file("${path.module}/s3_bucket-policy.json")
+  policy = file("${path.module}/s3_bucket_policy.json")
 }
