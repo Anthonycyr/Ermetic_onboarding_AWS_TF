@@ -40,16 +40,11 @@ resource "aws_iam_role_policy_attachment" "cross_account_assume_role" {
   policy_arn = element(var.policy_arns, count.index)
 }
 
-data "aws_iam_policy_document" "role_policy" {
-  source_json = file("${path.module}/role_policy.json")
-}
-
-
 resource "aws_iam_role_policy" "ErmeticPolicyRO" {
   name       = "ErmeticPolicyRO"
   role       = var.name
   depends_on = [aws_iam_role_policy_attachment.cross_account_assume_role]
-  policy     = data.aws_iam_policy_document.role_policy
+  policy     = file("${path.module}/role_policy.json")
 }
 
 resource "aws_cloudtrail" "ermetic_trail" {
@@ -66,11 +61,7 @@ resource "aws_s3_bucket" "ermetic_trail_bucket" {
   force_destroy = true
 }
 
-data "aws_bucket_policy_document" "s3_bucket_policy" {
-  source_json = file("${path.module}/s3_bucket-policy.json")
-}
-
 resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
   bucket = aws_s3_bucket.ermetic_trail_bucket.id
-  policy = data.aws_iam_policy_document.s3_bucket_policy
+  policy = file("${path.module}/s3_bucket-policy.json")
 }
