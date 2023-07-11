@@ -23,7 +23,7 @@ variable "policy_arns" {
   description = "Managed policy required for onboarding"
 }
 variable "external_id" {
-  default = ["xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"]
+  default = ["25b1295f-19eb-4614-ae75-e6b3833c9cd0"]
   type        = list(string)
   description = "The External ID of your Ermetic tenant"
 }
