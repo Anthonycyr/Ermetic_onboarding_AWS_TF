@@ -44,8 +44,7 @@ resource "aws_iam_role_policy" "ErmeticPolicyRO" {
   name       = "ErmeticPolicyRO"
   role       = var.name
   depends_on = [aws_iam_role_policy_attachment.cross_account_assume_role]
-  policy     = <<EOF
-   {
+  policy     ={
      "Version": "2012-10-17",
      "Statement": [
        {
@@ -169,7 +168,6 @@ resource "aws_iam_role_policy" "ErmeticPolicyRO" {
        }
      ]
    }
-EOF
 }
 
 resource "aws_cloudtrail" "ermetic_trail" {
