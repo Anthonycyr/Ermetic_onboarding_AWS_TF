@@ -6,7 +6,7 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 locals {
   account_id = data.aws_caller_identity.current.account_id
-  bucket_name = "ermetic_trail-bucket${local.account_id}"
+  bucket_name = "ermetic-trail-bucket-${local.account_id}"
 }
 data "aws_iam_policy_document" "cross_account_assume_role_policy" {
   statement {
