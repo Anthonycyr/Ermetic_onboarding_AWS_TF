@@ -46,6 +46,30 @@ resource "aws_iam_role_policy" "ErmeticPolicyRO" {
   depends_on = [aws_iam_role_policy_attachment.cross_account_assume_role]
   policy     = file("${path.module}/role_policy.json")
 }
+resource "aws_iam_role_policy" "ErmeticPolicyforBucketRead" {
+  name       = "ErmeticPolicyforBucketRead"
+  role       = var.name
+  depends_on = [aws_iam_role_policy_attachment.cross_account_assume_role]
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::${aws_s3_bucket.ermetic_trail_bucket.id}",
+        "arn:aws:s3:::${aws_s3_bucket.ermetic_trail_bucket.id}/*"
+      ]
+    }
+  ]
+  }
+EOF
+}
 
 resource "aws_cloudtrail" "ermetic_trail" {
   name                          = "ermetic_trail"
@@ -63,8 +87,6 @@ resource "aws_s3_bucket" "ermetic_trail_bucket" {
 
 resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
   bucket = aws_s3_bucket.ermetic_trail_bucket.id
-  # policy = file("${path.module}/s3_bucket_policy.json")
-
   policy = <<EOF
 {
   "Version": "2012-10-17",
