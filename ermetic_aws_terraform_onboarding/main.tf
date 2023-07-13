@@ -1,7 +1,5 @@
 provider "aws" {
   region     = var.region
-  # access_key = var.access_key
-  # secret_key = var.secret_key
 }
 data "aws_caller_identity" "current" {}
 locals {
@@ -119,3 +117,10 @@ resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
 EOF
 }
 
+data "aws_iam_role" "ermetic_role" {
+  name = var.name
+}
+output "role" {
+  description = "Arn of the Ermetic role"
+  value       = data.aws_iam_role.ermetic_role.arn
+}
